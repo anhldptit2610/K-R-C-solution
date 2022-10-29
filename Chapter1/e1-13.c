@@ -3,80 +3,90 @@
    with the bars horizontal; a vertical orientation is more challenging.
 */
 
-/* This code is a very basic solution, without table aligning... */
+/* 29/10/22: It seems like I misunderstood what this exercise wants.
+   Modified the code to make the histogram much like a histogram
+*/
+
 
 #include <stdio.h>
 #include <ctype.h>
 
 #define VERTICAL   1	/* 0 is equal horizontal, 1 is equal vertical */
-#define OUT        0
+#define OUT        0	/* it means we are not in a word */
 #define IN         1
-#define MAX_WORDS  1000	/* maximum limit of words which we can type in */
+#define MAX_WORD_LEN  15 /* maximum limit of word length */
+
+void draw_vertical_histogram(int freq[], int most);
+void draw_horizontal_histogram(int freq[], int most);
+
 
 int main(void)
 {
-	int status, length, index, histogram[MAX_WORDS] = {0};
+	int freq[MAX_WORD_LEN] = {0}, word_len, status, most;
 	long c;
 
 	status = OUT;
-
-	/* read the first character */
-	c = getchar();
-	if (isalpha(c)) {
-		status = IN;
-		printf("%c", (char)c);
-#if VERTICAL
-		length = 1;
-#else
-		index = 0;
-		++histogram[index];
-#endif
-	}
-
-#if VERTICAL
+	most = 0;	/* which length is the most */
 	while ((c = getchar()) != EOF) {
-		if (c == ' ' || c == '\t') {
+		if (c == ' ' || c == '\t' || c == '\n') {
+			++freq[word_len];
 			status = OUT;
-			continue;
-		} else if (isalpha(c) && status == OUT) {
-			if (length > 0)
-				printf("%10d\n%c", length, (char)c);
-			else 
-				printf("%c", (char)c);
-			length = 1;
+			word_len = 0;
+		}
+		else if (isalpha(c) && status == OUT) {
+			++word_len;
 			status = IN;
-		} else if (c == '\n') {
-			printf("%10d\n", length);
-			length = 0;
-			status = OUT;
 		} else {
-			++length;
-			printf("%c", (char)c);
+			++word_len;
 		}
 	}
+	for (int i = 0; i < MAX_WORD_LEN; i++)
+		if (freq[i] > most)
+			most = freq[i];
+#if VERTICAL
+	draw_vertical_histogram(freq, most);
 #else
-	while ((c = getchar()) != EOF) {
-		if (c == ' ' || c == '\t') {
-			status = OUT;
-			continue;
-		} else if (isalpha(c) && status == OUT) {
-			printf(" %c", (char)c);
-			++index;
-			histogram[index] = 1;
-			status = IN;
-		} else if (c == '\n') {
-			printf("\n");
-			for (int i = 0; i <= index; i++) {
-				printf("%7d ", histogram[i]);
-				histogram[i] = 0;
-			}
-			printf("\n");
-			index = 0;
-		} else {
-			printf("%c", (char)c);
-			++histogram[index];
-		}
-	}
+	draw_horizontal_histogram(freq, most);
 #endif
 	return 0;
+}
+
+void draw_vertical_histogram(int freq[], int most)
+{
+	for (int i = most; i >= 1; i--) {
+		printf("%2d |", i);
+		for (int j = 1; j <= MAX_WORD_LEN; j++) {
+			if (freq[j - 1] >= i)
+				printf("  *");
+			else
+				printf("   ");
+		}
+		printf("\n");
+	}
+	printf("    ");
+	for (int i = 0; i < MAX_WORD_LEN; i++)
+		printf("___");
+	printf("\n    ");
+	for (int i = 1; i <= MAX_WORD_LEN; i++)
+		printf("%3d", i);
+	printf("\n");
+}
+
+void draw_horizontal_histogram(int freq[], int most)
+{
+	printf(">15 |\n");
+	for (int i = MAX_WORD_LEN; i >= 1; i--) {
+		printf("%2d  |", i);
+		for (int j = 0; j < freq[i - 1]; j++)
+			printf("   *");
+		printf("\n");
+	}
+	printf("     ");
+	for (int i = 0; i < 2*most; i++)
+		printf("__");
+	printf("\n");
+	printf("     ");
+	for (int i = 1; i <= most; i++)
+		printf(" %2d", i);
+	printf("\n");
 }
