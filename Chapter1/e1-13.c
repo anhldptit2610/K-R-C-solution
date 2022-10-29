@@ -73,7 +73,7 @@ void draw_vertical_histogram(int freq[], int most)
 
 void draw_horizontal_histogram(int freq[], int most)
 {
-	printf(">15 |\n");
+	printf(">16 |\n");
 	for (int i = MAX_WORD_LEN - 1; i >= 0; i--) {
 		printf("%2d  |", i);
 		for (int j = 0; j < freq[i]; j++)
