@@ -5,12 +5,15 @@
    of the various floating-point types
 */
 
-/* There are two types of floating-point: float(single precision)
+/* In C, there are two floating-point data type: float(single precision)
    and double(double precision). I spent some times trying to under-
    stand the concept of IEEE-754 standard. Useful link:
 
    https://en.wikipedia.org/wiki/Single-precision_floating-point_format
    https://en.wikipedia.org/wiki/Double-precision_floating-point_format#C_and_C++
+
+   Why we need to understand these? If you want to compute range of float and double,
+   not using values defines in headers, you need to understand these.
 */
 
 #include <stdio.h>
