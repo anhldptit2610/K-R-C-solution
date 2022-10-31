@@ -51,13 +51,13 @@ int hex_to_dec(char c)
 int htoi(char *hex)
 {
 	int res, index, exponent;
-
 	res = index = 0;
 	
 	/* reach to the end of the string */
 	while (hex[index] != '\0')
 		++index;
 	index--;	
+
 	/* then traverse back and compute */
 	exponent = 0;
 	while (index > 1) {
