@@ -1,5 +1,5 @@
 CC := gcc
-CFLAGS = -Wall -std=gnu11 -Werror -Wextra
+CFLAGS = -Wall -std=gnu11 -Wextra
 
 % : %.c
 	$(CC) $(CFLAGS) $< -o $@
