@@ -29,15 +29,13 @@ int any(char *s1, char *s2)
 	int pos = -1, i, j;
 
 	i = 0;
-	for (; s2[i] != '\0'; i++) {
+	for (; s2[i] != '\0' && pos == -1; i++) {
 		j = 0;
-		while (s1[j] != '\0') {
+		for (; s1[j] != '\0'; j++)
 			if (s2[i] == s1[j]) {
 				pos = j;
 				break;
 			}
-			j++;
-		}
 	}
 	return pos;
 }
