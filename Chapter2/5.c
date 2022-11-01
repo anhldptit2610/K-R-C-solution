@@ -30,12 +30,10 @@ int any(char *s1, char *s2)
 
 	i = 0;
 	for (; s2[i] != '\0' && pos == -1; i++) {
-		j = 0;
-		for (; s1[j] != '\0'; j++)
-			if (s2[i] == s1[j]) {
-				pos = j;
-				break;
-			}
+		for (j = 0; s1[j] != '\0' && s2[i] != s1[j]; j++)
+			;
+		if (s2[i] == s1[j])
+			pos = j;
 	}
 	return pos;
 }
